@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Tabla con Círculos y Títulos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    th, td {
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      vertical-align: middle;
+      border: 1px solid #ccc;
+    }
+
+    th {
+      background-color: #e0e0e0;
+    }
+
+    .row-title {
+      background-color: #d0d0d0;
+      font-weight: bold;
+    }
+
+    .circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin: auto;
+    }
+
+    .verde {
+      background-color: green;
+    }
+
+    .amarillo {
+      background-color: yellow;
+    }
+
+    .rojo {
+      background-color: red;
+    }
+
+    .botones {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      margin: 5px;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 style="text-align:center;">Tabla de Círculos con Títulos</h2>
+
+  <table id="tabla">
+    <!-- Se genera por JS -->
+  </table>
+
+  <div class="botones">
+    <button onclick="agregarFila()">Agregar fila</button>
+    <button onclick="agregarColumna()">Agregar columna</button>
+  </div>
+
+  <script>
+    let filas = 2;
+    let columnas = 16;
+
+    // Puedes modificar estos arrays con los títulos que quieras
+    let titulosFilas = ["Fila 1", "Fila 2"];
+    let titulosColumnas = Array.from({ length: columnas }, (_, i) => `Col ${i + 1}`);
+
+    function crearTabla() {
+      const tabla = document.getElementById('tabla');
+      tabla.innerHTML = '';
+
+      const thead = document.createElement('thead');
+      const headerRow = document.createElement('tr');
+
+      // Primera celda vacía (esquina superior izquierda)
+      headerRow.appendChild(document.createElement('th'));
+
+      // Crear encabezados de columnas
+      for (let j = 0; j < columnas; j++) {
+        const th = document.createElement('th');
+        th.textContent = titulosColumnas[j] || `Col ${j + 1}`;
+        headerRow.appendChild(th);
+      }
+      thead.appendChild(headerRow);
+      tabla.appendChild(thead);
+
+      const tbody = document.createElement('tbody');
+
+      // Crear filas con encabezado lateral
+      for (let i = 0; i < filas; i++) {
+        const fila = document.createElement('tr');
+
+        const th = document.createElement('th');
+        th.classList.add('row-title');
+        th.textContent = titulosFilas[i] || `Fila ${i + 1}`;
+        fila.appendChild(th);
+
+        for (let j = 0; j < columnas; j++) {
+          const td = document.createElement('td');
+          const circulo = document.createElement('div');
+          circulo.classList.add('circle');
+
+          // Simula un valor aleatorio
+          let valor = Math.floor(Math.random() * 100);
+          if (valor < 35) {
+            circulo.classList.add('rojo');
+          } else if (valor < 70) {
+            circulo.classList.add('amarillo');
+          } else {
+            circulo.classList.add('verde');
+          }
+
+          td.appendChild(circulo);
+          fila.appendChild(td);
+        }
+
+        tbody.appendChild(fila);
+      }
+
+      tabla.appendChild(tbody);
+    }
+
+    function agregarFila() {
+      filas++;
+      titulosFilas.push(`Fila ${filas}`);
+      crearTabla();
+    }
+
+    function agregarColumna() {
+      columnas++;
+      titulosColumnas.push(`Col ${columnas}`);
+      crearTabla();
+    }
+
+    crearTabla();
+  </script>
+
+</body>
+</html>
