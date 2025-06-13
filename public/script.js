@@ -18,7 +18,7 @@ let metas = {};
 
 async function fetchIndicadores(endpoint) {
   try {
-    const response = await fetch(`https://cfe-indicadores-back.onrender.com/${endpoint}`); //here
+    const response = await fetch(`https://cfe-indicadores-back.onrender.com${endpoint}`); //here
     if (!response.ok) {
       throw new Error(`Error HTTP: ${response.status}`);
     }
