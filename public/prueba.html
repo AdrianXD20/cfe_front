@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="import" href="IndicadorIMU.html">
+  <meta charset="UTF-8">
+  <title>Tabla de Indicadores</title>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.min.js" integrity="sha384-VQqxDN0EQCkWoxt/0vsQvZswzTHUVOImccYmSyhJTp7kGtPed0Qcx8rK9h9YEgx+" crossorigin="anonymous"></script>
+    
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.min.js" integrity="sha384-VQqxDN0EQCkWoxt/0vsQvZswzTHUVOImccYmSyhJTp7kGtPed0Qcx8rK9h9YEgx+" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style2.css">
+<!--Excel-->
+    <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+   <!--PDF-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  </head>
+<body>
+
+  <nav class="navbar navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="front2.html">
+          <img src="/Comisión_Federal_de_Electricidad_(logo)_.svg.png" alt="Bootstrap" width="100" height="40">
+        </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Lista de Indicadores</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="front2.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="IndicadorIMU.html">Inconformidades</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="indicadorCompromisosServicios.html">COMSER</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="PercepcionGlobal.html">Percepcion Global de la FAC</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="PercepcionFacturacion.html">Percepcion Facturacion</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="EfectividadAtencion.html">Efectividad en la Atencion de Solicitudes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="CAC.html">Calidad en el registro de la CAC</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="OrdenesEnfoque.html">Ordenes de Enfoque al Cliente</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="desempeñoOperativo.html">Desempeño Operativo CAC</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="ConciliacionIngresos.html">Oportunidad en la Conciliacion de Ingresos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="DispoCFEmaticos.html">Disponibilidad de CFEmaticos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="calidadAtencion.html">Calidad de la Atencion</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Monivent.html">Cumplimiento de Evalluación Monivent</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="EncuestaCAC.html">Encuesta de Satisfacción CAC </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="EsperaFila.html">Maxima Espera en Fila</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="EsperaAtencion.html">Maxima Espera en Atención</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="opracionesCFEmaticos.html">Operaciones de CFEmáticos</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="ratio" style="--bs-aspect-ratio: 5%;">  </div>
+
+  <button class="close-btn" onclick="generarPDF()">Descargar PDF</button>
+  <button class="close-btn" onclick="exportarExcel()">Exportar a Excel</button>
+  <button class="close-btn" onclick="toggleModo()">Cambiar modo</button>
+
+<label class="switch">
+  <input type="checkbox" id="modoToggle">
+  <span class="slider">
+    <span class="icon sol">🌞</span>
+    <span class="icon luna">🌙</span>
+  </span>
+</label>
+
+  <h2 class="title2">Prueba visibilidad num</h2>
+      
+  <table id="tabla-indicadores">
+   
+    <thead>
+      <tr>
+        <th></th>
+        <th class="center2">Enero</th>
+        <th class="center2">Febrero</th>
+        <th class="center2">Marzo</th>
+        <th class="center2">Abril</th>
+        <th class="center2">Mayo</th>
+        <th class="center2">Junio</th>
+        <th class="center2">Julio</th>
+        <th class="center2">Agosto</th>
+        <th class="center2">Septiembre</th>
+        <th class="center2">Octubre</th>
+        <th class="center2">Noviembre</th>
+        <th class="center2">Diciembre</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th class="row-title">Inconformidades</th>
+        <td><div class="circle" data-row="Inconformidades" data-col="0"></div></td>
+        <td><div class="circle" data-row="Inconformidades" data-col="1"></div></td>
+        <td><div class="circle" data-row="Inconformidades" data-col="2"></div></td>
+        <td><div class="circle" data-row="Inconformidades" data-col="3"></div></td>
+        <td><div class="circle" data-row="Inconformidades" data-col="4"></div></td>
+        <td><div class="circle" data-row="Inconformidades" data-col="5"></div></td>
+        <td><div class="circle" data-row="Inconformidades" data-col="6"></div></td>
+        <td><div class="circle" data-row="Inconformidades" data-col="7"></div></td>
+        <td><div class="circle" data-row="Inconformidades" data-col="8"></div></td>
+        <td><div class="circle" data-row="Inconformidades" data-col="9"></div></td>
+        <td><div class="circle" data-row="Inconformidades" data-col="10"></div></td>
+        <td><div class="circle" data-row="Inconformidades" data-col="11"></div></td>
+      </tr>
+      <tr>
+        <th class="row-title">Compromisos Servicios</th>
+        <td><div class="circle" data-row="COMSER" data-col="0"></div></td>
+        <td><div class="circle" data-row="COMSER" data-col="1"></div></td>
+        <td><div class="circle" data-row="COMSER" data-col="2"></div></td>
+        <td><div class="circle" data-row="COMSER" data-col="3"></div></td>
+        <td><div class="circle" data-row="COMSER" data-col="4"></div></td>
+        <td><div class="circle" data-row="COMSER" data-col="5"></div></td>
+        <td><div class="circle" data-row="COMSER" data-col="6"></div></td>
+        <td><div class="circle" data-row="COMSER" data-col="7"></div></td>
+        <td><div class="circle" data-row="COMSER" data-col="8"></div></td>
+        <td><div class="circle" data-row="COMSER" data-col="9"></div></td>
+        <td><div class="circle" data-row="COMSER" data-col="10"></div></td>
+        <td><div class="circle" data-row="COMSER" data-col="11"></div></td>
+      </tr>
+      <tr>
+        <th class="row-title">Percepcion Global de la FAC</th>
+        <td> <div class="circle" data-row="Percepcion_FAC" data-col="0"></div></td>
+        <td> <div class="circle" data-row="Percepcion_FAC" data-col="1"></div></td>
+        <td> <div class="circle" data-row="Percepcion_FAC" data-col="2"></div></td>
+        <td> <div class="circle" data-row="Percepcion_FAC" data-col="3"></div></td>
+        <td> <div class="circle" data-row="Percepcion_FAC" data-col="4"></div></td>
+        <td> <div class="circle" data-row="Percepcion_FAC" data-col="5"></div></td>
+        <td> <div class="circle" data-row="Percepcion_FAC" data-col="6"></div></td>
+        <td> <div class="circle" data-row="Percepcion_FAC" data-col="7"></div></td>
+        <td> <div class="circle" data-row="Percepcion_FAC" data-col="8"></div></td>
+        <td> <div class="circle" data-row="Percepcion_FAC" data-col="9"></div></td>
+        <td> <div class="circle" data-row="Percepcion_FAC" data-col="10"></div></td>
+        <td> <div class="circle" data-row="Percepcion_FAC" data-col="11"></div></td>
+      </tr>
+      <tr>
+        <th class="row-title">Percepcion Facturacion </th>
+        <td> <div class="circle" data-row="Facturacion" data-col="0"></div></td>
+        <td> <div class="circle" data-row="Facturacion" data-col="1"></div></td>
+        <td> <div class="circle" data-row="Facturacion" data-col="2"></div></td>
+        <td> <div class="circle" data-row="Facturacion" data-col="3"></div></td>
+        <td> <div class="circle" data-row="Facturacion" data-col="4"></div></td>
+        <td> <div class="circle" data-row="Facturacion" data-col="5"></div></td>
+        <td> <div class="circle" data-row="Facturacion" data-col="6"></div></td>
+        <td> <div class="circle" data-row="Facturacion" data-col="7"></div></td>
+        <td> <div class="circle" data-row="Facturacion" data-col="8"></div></td>
+        <td> <div class="circle" data-row="Facturacion" data-col="9"></div></td>
+        <td> <div class="circle" data-row="Facturacion" data-col="10"></div></td>
+        <td> <div class="circle" data-row="Facturacion" data-col="11"></div></td>
+      </tr>
+      <tr>
+        <th class="row-title">Efectividad en la atención</th>
+        <td> <div class="circle" data-row="atencion" data-col="0"></div></td>
+        <td> <div class="circle" data-row="atencion" data-col="1"></div></td>
+        <td> <div class="circle" data-row="atencion" data-col="2"></div></td>
+        <td> <div class="circle" data-row="atencion" data-col="3"></div></td>
+        <td> <div class="circle" data-row="atencion" data-col="4"></div></td>
+        <td> <div class="circle" data-row="atencion" data-col="5"></div></td>
+        <td> <div class="circle" data-row="atencion" data-col="6"></div></td>
+        <td> <div class="circle" data-row="atencion" data-col="7"></div></td>
+        <td> <div class="circle" data-row="atencion" data-col="8"></div></td>
+        <td> <div class="circle" data-row="atencion" data-col="9"></div></td>
+        <td> <div class="circle" data-row="atencion" data-col="10"></div></td>
+        <td> <div class="circle" data-row="atencion" data-col="11"> </div></td>
+      </tr>
+      <tr>
+        <th class="row-title">Calidad en Registro CAC</th>
+        <td> <div class="circle" data-row="CAC" data-col="0"></div></td>
+        <td> <div class="circle" data-row="CAC" data-col="1"></div></td>
+        <td> <div class="circle" data-row="CAC" data-col="2"></div></td>
+        <td> <div class="circle" data-row="CAC" data-col="3"></div></td>
+        <td> <div class="circle" data-row="CAC" data-col="4"></div></td>
+        <td> <div class="circle" data-row="CAC" data-col="5"></div></td>
+        <td> <div class="circle" data-row="CAC" data-col="6"></div></td>
+        <td> <div class="circle" data-row="CAC" data-col="7"></div></td>
+        <td> <div class="circle" data-row="CAC" data-col="8"></div></td>
+        <td> <div class="circle" data-row="CAC" data-col="9"></div></td>
+        <td> <div class="circle" data-row="CAC" data-col="10"></div></td>
+        <td> <div class="circle" data-row="CAC" data-col="11"></div></td>
+      </tr>
+      <tr>
+        <th class="row-title">Ordenes de Enfoque</th>
+        <td> <div class="circle" data-row="Enfoque" data-col="0"></div></td>
+        <td> <div class="circle" data-row="Enfoque" data-col="1"></div></td>
+        <td> <div class="circle" data-row="Enfoque" data-col="2"></div></td>
+        <td> <div class="circle" data-row="Enfoque" data-col="3"></div></td>
+        <td> <div class="circle" data-row="Enfoque" data-col="4"></div></td>
+        <td> <div class="circle" data-row="Enfoque" data-col="5"></div></td>
+        <td> <div class="circle" data-row="Enfoque" data-col="6"></div></td>
+        <td> <div class="circle" data-row="Enfoque" data-col="7"></div></td>
+        <td> <div class="circle" data-row="Enfoque" data-col="8"></div></td>
+        <td> <div class="circle" data-row="Enfoque" data-col="9"></div></td>
+        <td> <div class="circle" data-row="Enfoque" data-col="10"></div></td>
+        <td> <div class="circle" data-row="Enfoque" data-col="11"></div></td>
+      </tr>
+      <tr>
+        <th class="row-title">Desempeño Operativo</th>
+        <td> <div class="circle" data-row="Desempeño" data-col="0"></div></td>
+        <td> <div class="circle" data-row="Desempeño" data-col="1"></div></td>
+        <td> <div class="circle" data-row="Desempeño" data-col="2"></div></td>
+        <td> <div class="circle" data-row="Desempeño" data-col="3"></div></td>
+        <td> <div class="circle" data-row="Desempeño" data-col="4"></div></td>
+        <td> <div class="circle" data-row="Desempeño" data-col="5"></div></td>
+        <td> <div class="circle" data-row="Desempeño" data-col="6"></div></td>
+        <td> <div class="circle" data-row="Desempeño" data-col="7"></div></td>
+        <td> <div class="circle" data-row="Desempeño" data-col="8"></div></td>
+        <td> <div class="circle" data-row="Desempeño" data-col="9"></div></td>
+        <td> <div class="circle" data-row="Desempeño" data-col="10"></div></td>
+        <td> <div class="circle" data-row="Desempeño" data-col="11"></div></td>
+      </tr>
+      <tr>
+        <th class="row-title">Conciliación de Ingresos</th>
+        <td> <div class="circle" data-row="Ingresos" data-col="0"></div></td>
+        <td> <div class="circle" data-row="Ingresos" data-col="1"></div></td>
+        <td> <div class="circle" data-row="Ingresos" data-col="2"></div></td>
+        <td> <div class="circle" data-row="Ingresos" data-col="3"></div></td>
+        <td> <div class="circle" data-row="Ingresos" data-col="4"></div></td>
+        <td> <div class="circle" data-row="Ingresos" data-col="5"></div></td>
+        <td> <div class="circle" data-row="Ingresos" data-col="6"></div></td>
+        <td> <div class="circle" data-row="Ingresos" data-col="7"></div></td>
+        <td> <div class="circle" data-row="Ingresos" data-col="8"></div></td>
+        <td> <div class="circle" data-row="Ingresos" data-col="9"></div></td>
+        <td> <div class="circle" data-row="Ingresos" data-col="10"></div></td>
+        <td> <div class="circle" data-row="Ingresos" data-col="11"></div></td>
+      </tr>
+      <tr>
+        <th class="row-title">Disponibilidad de CFEmáticos</th>
+        <td> <div class="circle" data-row="Dispo_CFEmaticos" data-col="0"></div></td>
+        <td> <div class="circle" data-row="Dispo_CFEmaticos" data-col="1"></div></td>
+        <td> <div class="circle" data-row="Dispo_CFEmaticos" data-col="2"></div></td>
+        <td> <div class="circle" data-row="Dispo_CFEmaticos" data-col="3"></div></td>
+        <td> <div class="circle" data-row="Dispo_CFEmaticos" data-col="4"></div></td>
+        <td> <div class="circle" data-row="Dispo_CFEmaticos" data-col="5"></div></td>
+        <td> <div class="circle" data-row="Dispo_CFEmaticos" data-col="6"></div></td>
+        <td> <div class="circle" data-row="Dispo_CFEmaticos" data-col="7"></div></td>
+        <td> <div class="circle" data-row="Dispo_CFEmaticos" data-col="8"></div></td>
+        <td> <div class="circle" data-row="Dispo_CFEmaticos" data-col="9"></div></td>
+        <td> <div class="circle" data-row="Dispo_CFEmaticos" data-col="10"></div></td>
+        <td> <div class="circle" data-row="Dispo_CFEmaticos" data-col="11"></div></td>
+      </tr>
+      <tr>
+        <th class="row-title">Calidad en la atención</th>
+        <td> <div class="circle" data-row="Calidad" data-col="0"></div></td>
+        <td> <div class="circle" data-row="Calidad" data-col="1"></div></td>
+        <td> <div class="circle" data-row="Calidad" data-col="2"></div></td>
+        <td> <div class="circle" data-row="Calidad" data-col="3"></div></td>
+        <td> <div class="circle" data-row="Calidad" data-col="4"></div></td>
+        <td> <div class="circle" data-row="Calidad" data-col="5"></div></td>
+        <td> <div class="circle" data-row="Calidad" data-col="6"></div></td>
+        <td> <div class="circle" data-row="Calidad" data-col="7"></div></td>
+        <td> <div class="circle" data-row="Calidad" data-col="8"></div></td>
+        <td> <div class="circle" data-row="Calidad" data-col="9"></div></td>
+        <td> <div class="circle" data-row="Calidad" data-col="10"></div></td>
+        <td> <div class="circle" data-row="Calidad" data-col="11"></div></td>
+      </tr>
+      <tr>
+        <th class="row-title">Evaluación Monivent</th>
+        <td> <div class="circle" data-row="Moni" data-col="0"></div></td>
+        <td> <div class="circle" data-row="Moni" data-col="1"></div></td>
+        <td> <div class="circle" data-row="Moni" data-col="2"></div></td>
+        <td> <div class="circle" data-row="Moni" data-col="3"></div></td>
+        <td> <div class="circle" data-row="Moni" data-col="4"></div></td>
+        <td> <div class="circle" data-row="Moni" data-col="5"></div></td>
+        <td> <div class="circle" data-row="Moni" data-col="6"></div></td>
+        <td> <div class="circle" data-row="Moni" data-col="7"></div></td>
+        <td> <div class="circle" data-row="Moni" data-col="8"></div></td>
+        <td> <div class="circle" data-row="Moni" data-col="9"></div></td>
+        <td> <div class="circle" data-row="Moni" data-col="10"></div></td>
+        <td> <div class="circle" data-row="Moni" data-col="11"></div></td>
+      </tr>
+      <tr>
+        <th class="row-title">Encuesta CAC</th>
+        <td> <div class="circle" data-row="Encuesta_CAC" data-col="0"></div></td>
+        <td> <div class="circle" data-row="Encuesta_CAC" data-col="1"></div></td>
+        <td> <div class="circle" data-row="Encuesta_CAC" data-col="2"></div></td>
+        <td> <div class="circle" data-row="Encuesta_CAC" data-col="3"></div></td>
+        <td> <div class="circle" data-row="Encuesta_CAC" data-col="4"></div></td>
+        <td> <div class="circle" data-row="Encuesta_CAC" data-col="5"></div></td>
+        <td> <div class="circle" data-row="Encuesta_CAC" data-col="6"></div></td>
+        <td> <div class="circle" data-row="Encuesta_CAC" data-col="7"></div></td>
+        <td> <div class="circle" data-row="Encuesta_CAC" data-col="8"></div></td>
+        <td> <div class="circle" data-row="Encuesta_CAC" data-col="9"></div></td>
+        <td> <div class="circle" data-row="Encuesta_CAC" data-col="10"></div></td>
+        <td> <div class="circle" data-row="Encuesta_CAC" data-col="11"></div></td>
+      </tr>
+      <tr>
+        <th class="row-title">Espera en Fila</th>
+        <td> <div class="circle" data-row="Fila" data-col="0"></div></td>
+        <td> <div class="circle" data-row="Fila" data-col="1"></div></td>
+        <td> <div class="circle" data-row="Fila" data-col="2"></div></td>
+        <td> <div class="circle" data-row="Fila" data-col="3"></div></td>
+        <td> <div class="circle" data-row="Fila" data-col="4"></div></td>
+        <td> <div class="circle" data-row="Fila" data-col="5"></div></td>
+        <td> <div class="circle" data-row="Fila" data-col="6"></div></td>
+        <td> <div class="circle" data-row="Fila" data-col="7"></div></td>
+        <td> <div class="circle" data-row="Fila" data-col="8"></div></td>
+        <td> <div class="circle" data-row="Fila" data-col="9"></div></td>
+        <td> <div class="circle" data-row="Fila" data-col="10"></div></td>
+        <td> <div class="circle" data-row="Fila" data-col="11"></div></td>
+      </tr>
+      <tr>
+        <th class="row-title"> Espera en atención</th>
+        <td> <div class="circle" data-row="Espera" data-col="0"></div></td>
+        <td> <div class="circle" data-row="Espera" data-col="1"></div></td>
+        <td> <div class="circle" data-row="Espera" data-col="2"></div></td>
+        <td> <div class="circle" data-row="Espera" data-col="3"></div></td>
+        <td> <div class="circle" data-row="Espera" data-col="4"></div></td>
+        <td> <div class="circle" data-row="Espera" data-col="5"></div></td>
+        <td> <div class="circle" data-row="Espera" data-col="6"></div></td>
+        <td> <div class="circle" data-row="Espera" data-col="7"></div></td>
+        <td> <div class="circle" data-row="Espera" data-col="8"></div></td>
+        <td> <div class="circle" data-row="Espera" data-col="9"></div></td>
+        <td> <div class="circle" data-row="Espera" data-col="10"></div></td>
+        <td> <div class="circle" data-row="Espera" data-col="11"></div></td>
+      </tr>
+      <tr>
+        <th class="row-title">Operaciones CFEmáticos</th>
+        <td> <div class="circle" data-row="CFEmaticos" data-col="0"></div></td>
+        <td> <div class="circle" data-row="CFEmaticos" data-col="1"></div></td>
+        <td> <div class="circle" data-row="CFEmaticos" data-col="2"></div></td>
+        <td> <div class="circle" data-row="CFEmaticos" data-col="3"></div></td>
+        <td> <div class="circle" data-row="CFEmaticos" data-col="4"></div></td>
+        <td> <div class="circle" data-row="CFEmaticos" data-col="5"></div></td>
+        <td> <div class="circle" data-row="CFEmaticos" data-col="6"></div></td>
+        <td> <div class="circle" data-row="CFEmaticos" data-col="7"></div></td>
+        <td> <div class="circle" data-row="CFEmaticos" data-col="8"></div></td>
+        <td> <div class="circle" data-row="CFEmaticos" data-col="9"></div></td>
+        <td> <div class="circle" data-row="CFEmaticos" data-col="10"></div></td>
+        <td> <div class="circle" data-row="CFEmaticos" data-col="11"></div></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  
+
+  <script>
+    const metas = {
+      "Inconformidades-0": { meta: 85, real: 5.18 },
+      "Inconformidades-1": { meta: 90.69, real: 85.88 },
+      "Inconformidades-2": { meta: 75.08, real: 75.09 },
+      "Inconformidades-3": { meta: 95, real: 0 },
+      "Inconformidades-4": { meta: 70, real: 65 },
+      "Inconformidades-5": { meta: 88, real: 88 },
+      "Inconformidades-6": { meta: 93, real: 95 },
+      "Inconformidades-7": { meta: 78, real: 80 },
+      "Inconformidades-8": { meta: 80, real: 70 },
+      "Inconformidades-9": { meta: 85, real: 85 },
+      "Inconformidades-10": { meta: 92, real: 94 },
+      "Inconformidades-11": { meta: 86, real: 83 },
+
+      "COMSER-0": { meta: 1, real: 90 },
+      "COMSER-1": { meta: 90, real: 85 },
+      "COMSER-2": { meta: 75, real: 75 },
+      "COMSER-3": { meta: 95, real: 98 },
+      "COMSER-4": { meta: 70, real: 65 },
+      "COMSER-5": { meta: 88, real: 88 },
+      "COMSER-6": { meta: 93, real: 95 },
+      "COMSER-7": { meta: 78, real: 80 },
+      "COMSER-8": { meta: 80, real: 70 },
+      "COMSER-9": { meta: 85, real: 85 },
+      "COMSER-10": { meta: 92, real: 94 },
+      "COMSER-11": { meta: 86, real: 83 },
+
+      "Percepcion_FAC-0":{meta: 70, real:80},
+      "Percepcion_FAC-1":{meta: 70, real:80},
+      "Percepcion_FAC-2":{meta: 70, real:80},
+      "Percepcion_FAC-3":{meta: 70, real:80},
+      "Percepcion_FAC-4":{meta: 70, real:80},
+      "Percepcion_FAC-5":{meta: 70, real:80},
+      "Percepcion_FAC-6":{meta: 70, real:80},
+      "Percepcion_FAC-7":{meta: 70, real:80},
+      "Percepcion_FAC-8":{meta: 70, real:80},
+      "Percepcion_FAC-9":{meta: 70, real:80},
+      "Percepcion_FAC-10":{meta: 70, real:80},
+      "Percepcion_FAC-11":{meta: 70, real:1},
+
+      "Facturacion-0": {meta:2, real:6},
+      "Facturacion-1": {meta:2, real:6},
+      "Facturacion-2": {meta:2, real:6},
+      "Facturacion-3": {meta:2, real:6},
+      "Facturacion-4": {meta:2, real:6},
+      "Facturacion-5": {meta:2, real:6},
+      "Facturacion-6": {meta:2, real:6},
+      "Facturacion-7": {meta:2, real:6},
+      "Facturacion-8": {meta:2, real:6},
+      "Facturacion-9": {meta:2, real:6},
+      "Facturacion-10": {meta:2, real:6},
+      "Facturacion-11": {meta:2, real:6},
+
+      "atencion-0": {meta: 7.1, real: 7},
+      "atencion-1": {meta: 7.1, real: 3},
+      "atencion-2":{meta:0 , real: 0},
+      "atencion-3":{meta: 1, real: 1},
+      "atencion-4": {meta: 1, real: 3},
+      "atencion-5": {meta: 2, real: 10},
+      "atencion-6": {meta: 5, real: 5},
+      "atencion-7": {meta:3, real:4},
+      "atencion-8": {meta: 4, real: 5},
+      "atencion-9": {meta:6, real:6},
+      "atencion-10": {meta: 6, real: 7},
+      "atencion-11": {meta: 6, real:6},
+
+      "CAC-0": {meta: 7.1, real: 7},
+      "CAC-1": {meta: 7.1, real: 3},
+      "CAC-2":{meta:0 , real: 0},
+      "CAC-3":{meta: 1, real: 1},
+      "CAC-4": {meta: 1, real: 3},
+      "CAC-5": {meta: 2, real: 10},
+      "CAC-6": {meta: 5, real: 5},
+      "CAC-7": {meta:3, real:4},
+      "CAC-8": {meta: 4, real: 5},
+      "CAC-9": {meta:6, real:6},
+      "CAC-10": {meta: 6, real: 7},
+      "CAC-11": {meta: 6, real:6},
+
+      "Enfoque-0": {meta:4, real:5},
+      "Enfoque-1": {meta:4, real:5},
+      "Enfoque-2": {meta:4, real:5},
+      "Enfoque-3": {meta:4, real:5},
+      "Enfoque-4": {meta:4, real:5},
+      "Enfoque-5": {meta:4, real:5},
+      "Enfoque-6": {meta:4, real:5},
+      "Enfoque-7": {meta:4, real:5},
+      "Enfoque-8": {meta:4, real:5},
+      "Enfoque-9": {meta:4, real:5},
+      "Enfoque-10": {meta:4, real:5},
+      "Enfoque-11": {meta:4, real:5},
+
+      "Desempeño-0": {meta: 5, real: 6},
+      "Desempeño-1": {meta: 5, real: 6},
+      "Desempeño-2": {meta: 5, real: 6},
+      "Desempeño-3": {meta: 5, real: 6},
+      "Desempeño-4": {meta: 5, real: 6},
+      "Desempeño-5": {meta: 5, real: 6},
+      "Desempeño-6": {meta: 5, real: 6},
+      "Desempeño-7": {meta: 5, real: 6},
+      "Desempeño-8": {meta: 5, real: 6},
+      "Desempeño-9": {meta: 5, real: 6},
+      "Desempeño-10": {meta: 5, real: 6},
+      "Desempeño-11": {meta: 5, real: 6},
+
+      "Ingresos-0" : {meta: 2, real: 9},
+      "Ingresos-1" : {meta: 2, real: 9},
+      "Ingresos-2" : {meta: 2, real: 9},
+      "Ingresos-3" : {meta: 2, real: 9},
+      "Ingresos-4" : {meta: 2, real: 9},
+      "Ingresos-5" : {meta: 2, real: 9},
+      "Ingresos-6" : {meta: 2, real: 9},
+      "Ingresos-7" : {meta: 2, real: 9},
+      "Ingresos-8" : {meta: 2, real: 9},
+      "Ingresos-9" : {meta: 2, real: 9},
+      "Ingresos-10" : {meta: 2, real: 9},
+      "Ingresos-11" : {meta: 2, real: 9},
+
+      "Dispo_CFEmaticos-0": {meta: 7, real: 10},
+      "Dispo_CFEmaticos-1": {meta: 7, real: 10},
+      "Dispo_CFEmaticos-2": {meta: 7, real: 10},
+      "Dispo_CFEmaticos-3": {meta: 7, real: 10},
+      "Dispo_CFEmaticos-4": {meta: 7, real: 10},
+      "Dispo_CFEmaticos-5": {meta: 7, real: 10},
+      "Dispo_CFEmaticos-6": {meta: 7, real: 10},
+      "Dispo_CFEmaticos-7": {meta: 7, real: 10},
+      "Dispo_CFEmaticos-8": {meta: 7, real: 10},
+      "Dispo_CFEmaticos-9": {meta: 7, real: 10},
+      "Dispo_CFEmaticos-10": {meta: 7, real: 10},
+      "Dispo_CFEmaticos-11": {meta: 7, real: 10},
+
+      "Calidad-0": {meta: 2, real: 5},
+      "Calidad-1": {meta: 2, real: 5},
+      "Calidad-2": {meta: 2, real: 5},
+      "Calidad-3": {meta: 2, real: 5},
+      "Calidad-4": {meta: 2, real: 5},
+      "Calidad-5": {meta: 2, real: 5},
+      "Calidad-6": {meta: 2, real: 5},
+      "Calidad-7": {meta: 2, real: 5},
+      "Calidad-8": {meta: 2, real: 5},
+      "Calidad-9": {meta: 2, real: 5},
+      "Calidad-10": {meta: 2, real: 5},
+      "Calidad-11": {meta: 2, real: 5},
+
+      "Moni-0" :{meta: 4, real:7},
+      "Moni-1" :{meta: 4, real:7},
+      "Moni-2" :{meta: 4, real:7},
+      "Moni-3" :{meta: 4, real:7},
+      "Moni-4" :{meta: 4, real:7},
+      "Moni-5" :{meta: 4, real:7},
+      "Moni-6" :{meta: 4, real:7},
+      "Moni-7" :{meta: 4, real:7},
+      "Moni-8" :{meta: 4, real:7},
+      "Moni-9" :{meta: 4, real:7},
+      "Moni-10" :{meta: 4, real:7},
+      "Moni-11" :{meta: 4, real:7},
+
+      "Encuesta_CAC-0" :{meta: 4, real: 3},
+      "Encuesta_CAC-1" :{meta: 4, real: 3},
+      "Encuesta_CAC-2" :{meta: 4, real: 3},
+      "Encuesta_CAC-3" :{meta: 4, real: 3},
+      "Encuesta_CAC-4" :{meta: 4, real: 3},
+      "Encuesta_CAC-5" :{meta: 4, real: 3},
+      "Encuesta_CAC-6" :{meta: 4, real: 3},
+      "Encuesta_CAC-7" :{meta: 4, real: 3},
+      "Encuesta_CAC-8" :{meta: 4, real: 3},
+      "Encuesta_CAC-9" :{meta: 4, real: 3},
+      "Encuesta_CAC-10" :{meta: 4, real: 3},
+      "Encuesta_CAC-11" :{meta: 4, real: 3},
+
+      "Fila-0": {meta:3, real: 1},
+      "Fila-1": {meta:3, real: 1},
+      "Fila-2": {meta:3, real: 1},
+      "Fila-3": {meta:3, real: 1},
+      "Fila-4": {meta:3, real: 1},
+      "Fila-5": {meta:3, real: 1},
+      "Fila-6": {meta:3, real: 1},
+      "Fila-7": {meta:3, real: 1},
+      "Fila-8": {meta:3, real: 1},
+      "Fila-9": {meta:3, real: 1},
+      "Fila-10": {meta:3, real: 1},
+      "Fila-11": {meta:3, real: 1},
+
+      "Espera-0": {meta: 2, real: 1},
+      "Espera-1": {meta: 2, real: 1},
+      "Espera-2": {meta: 2, real: 1},
+      "Espera-3": {meta: 2, real: 1},
+      "Espera-4": {meta: 2, real: 1},
+      "Espera-5": {meta: 2, real: 1},
+      "Espera-6": {meta: 2, real: 1},
+      "Espera-7": {meta: 2, real: 1},
+      "Espera-8": {meta: 2, real: 1},
+      "Espera-9": {meta: 2, real: 1},
+      "Espera-10": {meta: 2, real: 1},
+      "Espera-11": {meta: 2, real: 1},
+
+      "CFEmaticos-0": {meta:2, real: 6},
+      "CFEmaticos-1": {meta:2, real: 6},
+      "CFEmaticos-2": {meta:2, real: 6},
+      "CFEmaticos-3": {meta:2, real: 6},
+      "CFEmaticos-4": {meta:2, real: 6},
+      "CFEmaticos-5": {meta:2, real: 6},
+      "CFEmaticos-6": {meta:2, real: 6},
+      "CFEmaticos-7": {meta:2, real: 6},
+      "CFEmaticos-8": {meta:2, real: 6},
+      "CFEmaticos-9": {meta:2, real: 6},
+      "CFEmaticos-10": {meta:2, real: 6},
+      "CFEmaticos-11": {meta:2, real: 6},
+    };
+
+    const circles = document.querySelectorAll('.circle');
+
+circles.forEach(circle => {
+  const row = circle.dataset.row;
+  const col = circle.dataset.col;
+  const key = `${row}-${col}`;
+  const data = metas[key];
+
+  if (data) {
+    // Determinar color
+    let colorClass = '';
+    if (data.real > data.meta) {
+      colorClass = 'verde';
+    } else if (data.real < data.meta) {
+      colorClass = 'rojo';  
+    } else {
+      colorClass = 'amarillo';
+    }
+
+    // Reemplazar el contenido del <td> por estructura nueva
+    const parentTd = circle.parentElement;
+    parentTd.innerHTML = `
+      <div class="cell-content">
+        <div class="circle ${colorClass}">${data.real}</div>
+        <div class="data-text">
+          <div> <span>Meta: </span><strong>${data.meta}</strong></div>
+          <div> <span>Real: </span><strong>${data.real}</strong></div>
+        </div>
+      </div>
+    `;
+  }
+});
+
+/*
+        // Mostrar modal al pasar el mouse
+        circle.parentElement.addEventListener('mouseenter', () => {
+          document.getElementById('meta').textContent = data.meta;
+          document.getElementById('real').textContent = data.real;
+          document.getElementById('modal-overlay').style.display = 'block';
+          document.getElementById('info-modal').style.display = 'block';
+        });
+
+        circle.parentElement.addEventListener('mouseleave', () => {
+          closeModal();
+        });
+        */
+    
+/*
+    function closeModal() {
+      document.getElementById('modal-overlay').style.display = 'none';
+      document.getElementById('info-modal').style.display = 'none';
+    }
+
+    document.querySelectorAll('.click-inconformidad').forEach(circle => {
+    circle.style.cursor = 'pointer';
+    circle.addEventListener('click', () => {
+      window.location.href = 'IndicadorIMU.html';
+    });
+
+    document.querySelectorAll('.click-CompromisoServicios').forEach(circle =>{
+      circle.style.cursor = 'pointer';
+      circle.addEventListener('click', () => {
+        window.location.href = 'indicadorCompromisosServicios.html'
+      })
+    })
+  });
+*/
+/*Descargar en pdf*//*
+function descargarTabla() {
+  const tabla = document.getElementById('tabla-indicadores');
+  const opt = {
+    margin: [0.5, 0.5, 0.5, 0.5],
+    filename: 'tabla.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: {
+      scale: 3,
+      useCORS: true,
+      scrollY: 0
+    },
+    jsPDF: {
+      unit: 'in',
+      format: 'a2',
+      orientation: 'landscape'
+    },
+    pagebreak: {
+      mode: ['avoid-all', 'css', 'legacy']
+    }
+  };
+  html2pdf().set(opt).from(tabla).save();
+}*/
+async function generarPDF() {
+    const { jsPDF } = window.jspdf;
+    const tabla = document.getElementById('tabla-indicadores');
+
+    html2canvas(tabla, { useCORS: true }).then((canvas) => {
+  const imgData = canvas.toDataURL('image/png');
+  const pdf = new jsPDF('portrait', 'mm', 'a4');
+  const pageHeight = pdf.internal.pageSize.getHeight();
+  const pageWidth = pdf.internal.pageSize.getWidth();
+
+  const imgHeight = (canvas.height * pageWidth) / canvas.width;
+  let heightLeft = imgHeight;
+  let position = 0;
+
+  pdf.addImage(imgData, 'PNG', 0, position, pageWidth, imgHeight);
+  heightLeft -= pageHeight;
+
+  while (heightLeft > 0) {
+    position = heightLeft - imgHeight;
+    pdf.addPage();
+    pdf.addImage(imgData, 'PNG', 0, position, pageWidth, imgHeight);
+    heightLeft -= pageHeight;
+  }
+
+  pdf.save('tabla-larga.pdf');
+});
+}
+
+
+
+function exportarExcel() {
+  const wb = new ExcelJS.Workbook();
+  const ws = wb.addWorksheet('Reporte_Indicadores');
+
+  // 1. Encabezado superior (Indicador + Meses)
+  ws.mergeCells('A1:A2');
+  ws.getCell('A1').value = 'Indicador';
+  ws.getCell('A1').alignment = { vertical: 'middle', horizontal: 'center' };
+  ws.getCell('A1').font = { bold: true };
+
+  const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+                 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+  // Crear celdas fusionadas para meses
+  meses.forEach((mes, i) => {
+    const colIndex = i * 2 + 2;
+    const col1 = ws.getColumn(colIndex);
+    const col2 = ws.getColumn(colIndex + 1);
+    col1.width = 12;
+    col2.width = 12;
+
+    const cell1 = ws.getCell(1, colIndex);
+    cell1.value = mes;
+    cell1.alignment = { horizontal: 'center' };
+    cell1.font = { bold: true };
+    ws.mergeCells(1, colIndex, 1, colIndex + 1);
+
+    ws.getCell(2, colIndex).value = 'Meta';
+    ws.getCell(2, colIndex + 1).value = 'Real';
+
+    ws.getCell(2, colIndex).alignment = { horizontal: 'center' };
+    ws.getCell(2, colIndex + 1).alignment = { horizontal: 'center' };
+
+    ws.getCell(2, colIndex).font = { bold: true };
+    ws.getCell(2, colIndex + 1).font = { bold: true };
+  });
+
+  // 2. Datos
+  let filaIndex = 3;
+
+  const indicadores = [
+    "Inconformidades", "COMSER", "Percepcion_FAC", "Facturacion", "atencion", "CAC",
+    "Enfoque", "Desempeño", "Ingresos", "Dispo_CFEmaticos", "Calidad", "Moni",
+    "Encuesta_CAC", "Fila", "Espera", "CFEmaticos"
+  ];
+
+  indicadores.forEach(indicador => {
+    const fila = ws.getRow(filaIndex);
+    fila.getCell(1).value = indicador;
+    fila.getCell(1).alignment = { horizontal: 'left' };
+
+    for (let i = 0; i < 12; i++) {
+      const key = `${indicador}-${i}`;
+      const datos = metas[key];
+
+      const colBase = i * 2 + 2;
+      if (datos) {
+        fila.getCell(colBase).value = datos.meta;
+        fila.getCell(colBase + 1).value = datos.real;
+      } else {
+        fila.getCell(colBase).value = 'N/A';
+        fila.getCell(colBase + 1).value = 'N/A';
+      }
+    }
+
+    filaIndex++;
+  });
+
+  // 3. Estilos opcionales (borde y relleno de encabezados)
+  const encabezados = ws.getRows(1, 2);
+  encabezados.forEach(row => {
+    row.eachCell(cell => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFF0F0F0' }
+      };
+      cell.border = {
+        top: { style: 'thin', color: { argb: 'FFCCCCCC' } },
+        left: { style: 'thin', color: { argb: 'FFCCCCCC' } },
+        bottom: { style: 'thin', color: { argb: 'FFCCCCCC' } },
+        right: { style: 'thin', color: { argb: 'FFCCCCCC' } }
+      };
+    });
+  });
+
+  // 4. Descargar
+  wb.xlsx.writeBuffer().then(buffer => {
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "Reporte_Indicadores.xlsx";
+    link.click();
+    URL.revokeObjectURL(link.href);
+  });
+}
+
+
+/*
+    // 3) Recorrer cada fila de la tabla HTML
+    document.querySelectorAll('#tabla-indicadores tbody tr').forEach((tr, rowIndex) => {
+      const indicador = tr.querySelector('th.row-title').textContent.trim();
+      const fila = ws.addRow([ indicador ]);  // añade indicador + 12 celdas vacías
+
+      // 4) Para cada mes, rellena la celda correspondiente
+      tr.querySelectorAll('td').forEach((td, colIndex) => {
+        const key = `${indicador}-${colIndex}`;
+        const data = metas[key] || { meta:'', real:'' };
+        const cell = ws.getCell(fila.number, colIndex+2);
+
+        // valor con salto de línea
+        cell.value = `Real: ${data.real}\nMeta: ${data.meta}`;
+        cell.alignment = { wrapText: true, horizontal:'center', vertical:'middle' };
+
+        // color de fondo según lógica
+        let color = 'FFFFFF';          // blanco por defecto
+        if (data.real > data.meta)    color = 'FF00B050'; // verde
+        else if (data.real < data.meta) color = 'FFFF0000'; // rojo
+        else                           color = 'FFFFFF00'; // amarillo
+
+        cell.fill = {
+          type:'pattern', pattern:'solid',
+          fgColor:{ argb: color }
+        };
+
+        // bordes finos grises
+        cell.border = {
+          top: {style:'thin',color:{argb:'FFDDDDDD'}},
+          left:{style:'thin',color:{argb:'FFDDDDDD'}},
+          bottom:{style:'thin',color:{argb:'FFDDDDDD'}},
+          right:{style:'thin',color:{argb:'FFDDDDDD'}}
+        };
+      });
+    });
+
+    // 5) Descargar
+    wb.xlsx.writeBuffer().then(buffer => {
+      const blob = new Blob([buffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'indicadores_formateados.xlsx';
+      link.click();
+    });
+  }
+*/
+
+
+function toggleModo() {
+    document.body.classList.toggle('modo-oscuro');
+    localStorage.setItem('modo', document.body.classList.contains('modo-oscuro') ? 'oscuro' : 'claro');
+  }
+
+  window.onload = () => {
+    if (localStorage.getItem('modo') === 'oscuro') {
+      document.body.classList.add('modo-oscuro');
+    }
+  }
+   const toggle = document.getElementById('modoToggle');
+
+  // Cargar modo guardado en localStorage
+  window.onload = () => {
+    if (localStorage.getItem('modo') === 'oscuro') {
+      document.body.classList.add('modo-oscuro');
+      toggle.checked = true;
+    }
+  };
+
+  // Cambiar modo y guardar
+  toggle.addEventListener('change', () => {
+    document.body.classList.toggle('modo-oscuro');
+    const modo = document.body.classList.contains('modo-oscuro') ? 'oscuro' : 'claro';
+    localStorage.setItem('modo', modo);
+  });
+
+</script>
+</body>
+</html>
