@@ -95,6 +95,16 @@
         </div>
       </nav>
     <h2  class="title" style="text-align: center;">Inconformidades</h2>
+
+     <!-- Filtro por Año -->
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="yearFilter" class="form-label">Filtrar por Año</label>
+                <input type="number" id="yearFilter" class="form-control" placeholder="Ej. 2025" onchange="cargarDatos(window.endpoint)">
+            </div>
+        </div>
+    </div>
     <table id="hola">
         <thead>
             <tr>

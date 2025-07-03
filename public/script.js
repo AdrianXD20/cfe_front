@@ -18,12 +18,28 @@ let metas = {};
 
 async function fetchIndicadores(endpoint) {
   try {
-    const response = await fetch(`https://cfe-indicadores-back.onrender.com${endpoint}`); //here
+    const yearFilter = document.getElementById('yearFilter')?.value || '';
+    const url = yearFilter ? `${endpoint}?year=${yearFilter}` : endpoint;
+    const response = await fetch(`https://cfe-indicadores-back.onrender.com${url}`, {
+      cache: 'no-store' // Evitar caché
+    });
     if (!response.ok) {
       throw new Error(`Error HTTP: ${response.status}`);
     }
-    const indicadores = await response.json();
-    return indicadores;
+    const data = await response.json();
+    
+    console.log('Respuesta cruda de la API:', data);
+    
+    // Manejar diferentes formatos de respuesta
+    if (Array.isArray(data)) {
+      return data;
+    } else if (data.indicadores && Array.isArray(data.indicadores)) {
+      return data.indicadores;
+    } else {
+      console.error('Formato de respuesta inesperado:', data);
+      alert('Formato de datos no válido recibido de la API.');
+      return [];
+    }
   } catch (error) {
     console.error('Error al obtener indicadores:', error);
     alert('No se pudieron cargar los datos de la API. Verifica que el servidor esté corriendo.');
@@ -34,15 +50,27 @@ async function fetchIndicadores(endpoint) {
 function procesarIndicadores(indicadores) {
   const metasProcesadas = {};
   indicadores.forEach(indicador => {
-    if (indicador.Departamento && indicador.month && meses[indicador.month] !== undefined) {
-      const key = `${indicador.Departamento}-${meses[indicador.month]}`;
+    // Normalizar Departamento y month
+    const departamento = indicador.Departamento?.trim();
+    const month = indicador.month?.trim();
+    
+    if (departamento && month && meses[month] !== undefined) {
+      const key = `${departamento}-${meses[month]}`;
       metasProcesadas[key] = {
-        meta: indicador.meta,
-        real: indicador.real,
-        acumulado: indicador.acumulado
+        meta: indicador.meta || 0,
+        real: indicador.real || 0,
+        acumulado: indicador.acumulado || 0
       };
+      console.log(`Procesado: ${key}`, metasProcesadas[key]);
     } else {
-      console.warn('Documento ignorado:', indicador);
+      console.warn('Documento ignorado:', {
+        _id: indicador._id,
+        Departamento: indicador.Departamento,
+        month: indicador.month,
+        real: indicador.real,
+        meta: indicador.meta,
+        acumulado: indicador.acumulado
+      });
     }
   });
   return metasProcesadas;
@@ -61,6 +89,7 @@ async function cargarDatos(endpoint) {
     const key = `${row}-${col}`;
     const data = metas[key];
 
+    const parentTd = circle.parentElement;
     if (data) {
       let colorClass = '';
       if (data.real > data.meta) {
@@ -71,7 +100,6 @@ async function cargarDatos(endpoint) {
         colorClass = 'amarillo';
       }
 
-      const parentTd = circle.parentElement;
       parentTd.innerHTML = `
         <div class="cell-content">
           <div class="circle ${colorClass}">${data.real}</div>
@@ -84,6 +112,16 @@ async function cargarDatos(endpoint) {
       `;
     } else {
       console.warn(`No se encontraron datos para ${key}`);
+      parentTd.innerHTML = `
+        <div class="cell-content">
+          <div class="circle gris">N/A</div>
+          <div class="data-text">
+            <div>Meta: <strong>N/A</strong></div>
+            <div>Real: <strong>N/A</strong></div>
+            <div>Acumulado: <strong>N/A</strong></div>
+          </div>
+        </div>
+      `;
     }
   });
 }
