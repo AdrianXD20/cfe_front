@@ -20,16 +20,29 @@ async function fetchIndicadores(endpoint) {
   try {
     const yearFilter = document.getElementById('yearFilter')?.value || '';
     const url = yearFilter ? `${endpoint}?year=${yearFilter}` : endpoint;
-    const response = await fetch(`https://cfe-indicadores-back.onrender.com${url}`, {
+    console.log('URL solicitada:', `http://localhost:3000${url}`); // Log para depurar la URL
+
+    const response = await fetch(`http://localhost:3000${url}`, {
       cache: 'no-store' // Evitar caché
     });
     if (!response.ok) {
       throw new Error(`Error HTTP: ${response.status}`);
     }
-    const data = await response.json();
-    
-    console.log('Respuesta cruda de la API:', data);
-    
+
+    // Obtener como texto primero para depurar
+    const text = await response.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (parseError) {
+      console.error('Error al parsear JSON:', parseError);
+      console.error('Respuesta raw del servidor:', text); // Muestra el contenido crudo si no es JSON
+      alert('La respuesta del servidor no es JSON válido. Revisa la consola para el contenido raw.');
+      return [];
+    }
+
+    console.log('Datos recibidos del backend para año', yearFilter || 'todos:', data); // Log para ver los datos exactos
+
     // Manejar diferentes formatos de respuesta
     if (Array.isArray(data)) {
       return data;
@@ -46,7 +59,8 @@ async function fetchIndicadores(endpoint) {
     return [];
   }
 }
-
+/*Vuejooooo*/
+/*
 function procesarIndicadores(indicadores) {
   const metasProcesadas = {};
   indicadores.forEach(indicador => {
@@ -74,8 +88,37 @@ function procesarIndicadores(indicadores) {
     }
   });
   return metasProcesadas;
+}*/
+function procesarIndicadores(indicadores) {
+  const metasProcesadas = {};
+  indicadores.forEach(indicador => {
+    const departamento = indicador.Departamento?.trim();
+    const month = indicador.month?.trim();
+    
+    console.log('Procesando indicador:', { // Nuevo log para depurar
+      _id: indicador._id,
+      Departamento: departamento,
+      month: month,
+      year: indicador.year,
+      real: indicador.real,
+      meta: indicador.meta
+    });
+    
+    if (departamento && month && meses[month] !== undefined) {
+      const key = `${departamento}-${meses[month]}`;
+      metasProcesadas[key] = {
+        meta: indicador.meta || 0,
+        real: indicador.real || 0,
+        acumulado: indicador.acumulado || 0
+      };
+      console.log(`Key creada: ${key}`, metasProcesadas[key]);
+    } else {
+      console.warn('Indicador ignorado por datos inválidos:', indicador);
+    }
+  });
+  return metasProcesadas;
 }
-
+/*Viejooooo*//*
 async function cargarDatos(endpoint) {
   const indicadores = await fetchIndicadores(endpoint);
   console.log('Indicadores obtenidos:', indicadores);
@@ -124,6 +167,52 @@ async function cargarDatos(endpoint) {
       `;
     }
   });
+}*/
+/*New*/
+async function cargarDatos(endpoint) {
+  const indicadores = await fetchIndicadores(endpoint);
+  console.log('Indicadores obtenidos:', indicadores);
+  metas = procesarIndicadores(indicadores);
+  console.log('Metas procesadas:', metas);
+  
+  const circles = document.querySelectorAll('.circle');
+circles.forEach(circle => {
+  const row = circle.dataset.row;
+  const col = circle.dataset.col;
+  const key = `${row}-${col}`;
+  const data = metas[key] || { meta: 'N/A', real: 'N/A', acumulado: 'N/A' }; // Forzar N/A si undefined
+
+  const parentTd = circle.parentElement;
+  let colorClass = 'gris';
+  let displayReal = data.real;
+  let displayMeta = data.meta;
+  let displayAcumulado = data.acumulado;
+
+  if (data.real !== 'N/A' && data.meta !== 'N/A') {
+    if (data.real > data.meta) {
+      colorClass = 'verde';
+    } else if (data.real < data.meta) {
+      colorClass = 'rojo';
+    } else {
+      colorClass = 'amarillo';
+    }
+  } else {
+    displayReal = 'N/A';
+    displayMeta = 'N/A';
+    displayAcumulado = 'N/A';
+  }
+
+  parentTd.innerHTML = `
+    <div class="cell-content">
+      <div class="circle ${colorClass}" data-row="${row}" data-col="${col}">${displayReal}</div>
+      <div class="data-text">
+        <div>Meta: <strong>${displayMeta}</strong></div>
+        <div>Real: <strong>${displayReal}</strong></div>
+        <div>Acumulado: <strong>${displayAcumulado}</strong></div>
+      </div>
+    </div>
+  `;
+});
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -31,7 +31,7 @@
                 </select>
             </div>
             <div class="flex-1">
-                <label for="departamentoFilter" class="block text-sm font-medium text-gray-700">Departamento</label>
+                <label for="departamentoFilter" class="block text-sm font-medium text-gray-700">CAI</label>
                 <select id="departamentoFilter" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" onchange="loadIndicadores()">
                     <option value="" selected>Todos</option>
                     <option value="Centro">Centro</option>
@@ -79,7 +79,7 @@
                     <input type="number" id="meta" name="meta" step="0.01" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
                 </div>
                 <div>
-                    <label for="departamento" class="block text-sm font-medium text-gray-700">Departamento</label>
+                    <label for="departamento" class="block text-sm font-medium text-gray-700">CAI</label>
                     <select id="departamento" name="departamento" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
                         <option value="" disabled selected>Selecciona un departamento</option>
                         <option value="Centro">Centro</option>
@@ -115,12 +115,11 @@
             <table class="min-w-full">
                 <thead class="bg-indigo-600 text-white">
                     <tr>
-                        <th class="py-3 px-4 text-left cursor-pointer" onclick="sortTable('id')">ID</th>
                         <th class="py-3 px-4 text-left cursor-pointer" onclick="sortTable('month')">Mes</th>
                         <th class="py-3 px-4 text-left cursor-pointer" onclick="sortTable('year')">Año</th>
                         <th class="py-3 px-4 text-left cursor-pointer" onclick="sortTable('real')">Real</th>
                         <th class="py-3 px-4 text-left cursor-pointer" onclick="sortTable('meta')">Meta</th>
-                        <th class="py-3 px-4 text-left cursor-pointer" onclick="sortTable('Departamento')">Departamento</th>
+                        <th class="py-3 px-4 text-left cursor-pointer" onclick="sortTable('Departamento')">CAI</th>
                         <th class="py-3 px-4 text-left cursor-pointer" onclick="sortTable('acumulado')">Acumulado</th>
                         <th class="py-3 px-4 text-left">Acciones</th>
                     </tr>
