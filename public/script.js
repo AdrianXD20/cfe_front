@@ -20,9 +20,9 @@ async function fetchIndicadores(endpoint) {
   try {
     const yearFilter = document.getElementById('yearFilter')?.value || '';
     const url = yearFilter ? `${endpoint}?year=${yearFilter}` : endpoint;
-    console.log('URL solicitada:', `http://localhost:3000${url}`); // Log para depurar la URL
+    console.log('URL solicitada:', `https://cfe-indicadores-back.onrender.com${url}`); // Log para depurar la URL
 
-    const response = await fetch(`http://localhost:3000${url}`, {
+    const response = await fetch(`https://cfe-indicadores-back.onrender.com${url}`, {
       cache: 'no-store' // Evitar caché
     });
     if (!response.ok) {
@@ -174,7 +174,7 @@ async function cargarDatos(endpoint) {
   console.log('Indicadores obtenidos:', indicadores);
   metas = procesarIndicadores(indicadores);
   console.log('Metas procesadas:', metas);
-  
+
   const circles = document.querySelectorAll('.circle');
 circles.forEach(circle => {
   const row = circle.dataset.row;
@@ -355,3 +355,8 @@ window.onload = () => {
     document.body.classList.add('modo-oscuro');
   }
 };
+
+function btnCrud() {
+  const url = '/crud.html';
+  window.location.href = url;
+}

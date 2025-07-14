@@ -221,8 +221,7 @@
                 tableBody.innerHTML = paginatedIndicadores.length
                     ? paginatedIndicadores.map(ind => `
                         <tr class="hover:bg-gray-50">
-                            <td class="py-3 px-4">${ind._id}</td>
-                            <td class="py-3 px-4">${ind.month || 'N/A'}</td>
+                                <td class="py-3 px-4">${ind.month || 'N/A'}</td>
                             <td class="py-3 px-4">${ind.year || 'N/A'}</td>
                             <td class="py-3 px-4">${ind.real || '0'}</td>
                             <td class="py-3 px-4">${ind.meta || '0'}</td>
