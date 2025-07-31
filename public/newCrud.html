@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -29,6 +28,10 @@
                     <option value="cecap">CECAP</option>
                     <option value="mea">MEA</option>
                     <option value="mef">MEF</option>
+                    <option value="ttr">TTR</option>
+                    <option value="sat">SAT</option>
+                    <option value="cxc">CXC</option>
+                    <option value="icp">ICP</option>
                 </select>
             </div>
             <div class="flex-1">
@@ -50,64 +53,50 @@
             </div>
         </div>
 
-        <!-- Formulario -->
+        <!-- Formulario para múltiples CAIs -->
         <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-            <form id="indicadorForm" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label for="month" class="block text-sm font-medium text-gray-700">Mes</label>
-                    <select id="month" name="month" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
-                        <option value="" disabled selected>Selecciona un mes</option>
-                        <option value="Enero">Enero</option>
-                        <option value="Febrero">Febrero</option>
-                        <option value="Marzo">Marzo</option>
-                        <option value="Abril">Abril</option>
-                        <option value="Mayo">Mayo</option>
-                        <option value="Junio">Junio</option>
-                        <option value="Julio">Julio</option>
-                        <option value="Agosto">Agosto</option>
-                        <option value="Septiembre">Septiembre</option>
-                        <option value="Octubre">Octubre</option>
-                        <option value="Noviembre">Noviembre</option>
-                        <option value="Diciembre">Diciembre</option>
-                    </select>
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Crear Indicadores Mensuales</h2>
+            <form id="indicadorForm" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="month" class="block text-sm font-medium text-gray-700">Mes</label>
+                        <select id="month" name="month" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
+                            <option value="" disabled selected>Selecciona un mes</option>
+                            <option value="Enero">Enero</option>
+                            <option value="Febrero">Febrero</option>
+                            <option value="Marzo">Marzo</option>
+                            <option value="Abril">Abril</option>
+                            <option value="Mayo">Mayo</option>
+                            <option value="Junio">Junio</option>
+                            <option value="Julio">Julio</option>
+                            <option value="Agosto">Agosto</option>
+                            <option value="Septiembre">Septiembre</option>
+                            <option value="Octubre">Octubre</option>
+                            <option value="Noviembre">Noviembre</option>
+                            <option value="Diciembre">Diciembre</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="year" class="block text-sm font-medium text-gray-700">Año</label>
+                        <input type="number" id="year" name="year" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required placeholder="Ej. 2025">
+                    </div>
                 </div>
-                <div>
-                    <label for="real" class="block text-sm font-medium text-gray-700">Real (%)</label>
-                    <input type="number" id="real" name="real" step="0.01" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">CAI</th>
+                                <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Real (%)</th>
+                                <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Meta (%)</th>
+                                <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Acumulado (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="caiInputs">
+                            <!-- Inputs generados dinámicamente -->
+                        </tbody>
+                    </table>
                 </div>
-                <div>
-                    <label for="meta" class="block text-sm font-medium text-gray-700">Meta (%)</label>
-                    <input type="number" id="meta" name="meta" step="0.01" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
-                </div>
-                <div>
-                    <label for="departamento" class="block text-sm font-medium text-gray-700">CAI</label>
-                    <select id="departamento" name="departamento" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
-                        <option value="" disabled selected>Selecciona un departamento</option>
-                        <option value="Centro">Centro</option>
-                        <option value="Norte">Norte</option>
-                        <option value="Sur">Sur</option>
-                        <option value="Oriente">Oriente</option>
-                        <option value="Poniente">Poniente</option>
-                        <option value="Progreso">Progreso</option>
-                        <option value="Hunucma">Hunucma</option>
-                        <option value="Uman">Uman</option>
-                        <option value="Acanceh">Acanceh</option>
-                        <option value="Conkal">Conkal</option>
-                        <option value="total">Total</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="year" class="block text-sm font-medium text-gray-700">Año</label>
-                    <input type="number" id="year" name="year" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required placeholder="Ej. 2025">
-                </div>
-                <div>
-                    <label for="acumulado" class="block text-sm font-medium text-gray-700">Acumulado (%)</label>
-                    <input type="number" id="acumulado" name="acumulado" step="0.01" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
-                </div>
-                <input type="hidden" id="indicadorId">
-                <div class="col-span-1 sm:col-span-2">
-                    <button type="submit" class="w-full bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700 transition">Guardar Indicador</button>
-                </div>
+                <button type="submit" class="w-full bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700 transition">Guardar Indicadores</button>
             </form>
         </div>
 
@@ -145,6 +134,7 @@
         const prevPageBtn = document.getElementById('prevPage');
         const nextPageBtn = document.getElementById('nextPage');
         const pageInfo = document.getElementById('pageInfo');
+        const caiInputs = document.getElementById('caiInputs');
         const baseUrl = 'https://cfe-indicadores-back.onrender.com';
         let currentPage = 1;
         const itemsPerPage = 10;
@@ -153,26 +143,39 @@
         let sortDirection = 'asc';
 
         const meses = {
-            'Enero': 0,
-            'Febrero': 1,
-            'Marzo': 2,
-            'Abril': 3,
-            'Mayo': 4,
-            'Junio': 5,
-            'Julio': 6,
-            'Agosto': 7,
-            'Septiembre': 8,
-            'Octubre': 9,
-            'Noviembre': 10,
-            'Diciembre': 11
+            'Enero': 0, 'Febrero': 1, 'Marzo': 2, 'Abril': 3, 'Mayo': 4, 'Junio': 5,
+            'Julio': 6, 'Agosto': 7, 'Septiembre': 8, 'Octubre': 9, 'Noviembre': 10, 'Diciembre': 11
         };
 
-        // Cargar indicadores sin paginación en el backend
+        const cais = [
+            'Centro', 'Norte', 'Sur', 'Oriente', 'Poniente',
+            'Progreso', 'Hunucma', 'Uman', 'Acanceh', 'Conkal', 'total'
+        ];
+
+        // Generar inputs para CAIs
+        function generateCaiInputs() {
+            caiInputs.innerHTML = cais.map(cai => `
+                <tr>
+                    <td class="py-2 px-4">${cai}</td>
+                    <td class="py-2 px-4">
+                        <input type="number" name="real_${cai}" step="0.01" class="w-full p-2 border border-gray-300 rounded-md" required>
+                    </td>
+                    <td class="py-2 px-4">
+                        <input type="number" name="meta_${cai}" step="0.01" class="w-full p-2 border border-gray-300 rounded-md" required>
+                    </td>
+                    <td class="py-2 px-4">
+                        <input type="number" name="acumulado_${cai}" step="0.01" class="w-full p-2 border border-gray-300 rounded-md" required>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Cargar indicadores
         async function loadIndicadores() {
             const indicador = indicadorSelect.value;
             const departamento = departamentoFilter.value;
             if (!indicador) {
-                tableBody.innerHTML = '<tr><td colspan="8" class="py-3 px-4 text-center">Selecciona un indicador</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan=7 class="py-3 px-4 text-center">Selecciona un indicador</td></tr>';
                 prevPageBtn.disabled = true;
                 nextPageBtn.disabled = true;
                 pageInfo.textContent = '';
@@ -180,18 +183,12 @@
             }
 
             try {
-                const response = await fetch(`${baseUrl}/api/${indicador}`, {
-                    cache: 'no-store'
-                });
+                const response = await fetch(`${baseUrl}/api/${indicador}`, { cache: 'no-store' });
                 indicadores = await response.json();
-                console.log('Indicadores obtenidos:', indicadores);
-
-                // Aplicar filtro de departamento
                 const filteredIndicadores = departamento
                     ? indicadores.filter(ind => ind.Departamento === departamento)
                     : indicadores;
 
-                // Ordenar indicadores si hay un campo seleccionado
                 if (sortField) {
                     filteredIndicadores.sort((a, b) => {
                         let valueA = a[sortField] || (sortField === 'id' ? a._id : '');
@@ -204,15 +201,10 @@
                             valueA = valueA.toString();
                             valueB = valueB.toString();
                         }
-                        if (sortDirection === 'asc') {
-                            return valueA > valueB ? 1 : -1;
-                        } else {
-                            return valueA < valueB ? 1 : -1;
-                        }
+                        return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
                     });
                 }
 
-                // Paginación en el frontend
                 const totalItems = filteredIndicadores.length;
                 const totalPages = Math.ceil(totalItems / itemsPerPage);
                 const start = (currentPage - 1) * itemsPerPage;
@@ -222,27 +214,26 @@
                 tableBody.innerHTML = paginatedIndicadores.length
                     ? paginatedIndicadores.map(ind => `
                         <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-4">${ind.month || 'N/A'}</td>
+                            <td class="py-3 px-4">${ind.month || 'N/A'}</td>
                             <td class="py-3 px-4">${ind.year || 'N/A'}</td>
                             <td class="py-3 px-4">${ind.real || '0'}</td>
                             <td class="py-3 px-4">${ind.meta || '0'}</td>
                             <td class="py-3 px-4">${ind.Departamento || 'N/A'}</td>
                             <td class="py-3 px-4">${ind.acumulado || '0'}</td>
                             <td class="py-3 px-4">
-                                <button class="bg-indigo-500 text-white px-3 py-1 rounded hover:bg-indigo-600 transition" onclick="editIndicador('${ind._id}')">Editar</button>
+                                <a href="edit.html?indicador=${indicador}&month=${encodeURIComponent(ind.month)}&year=${ind.year}" class="bg-indigo-500 text-white px-3 py-1 rounded hover:bg-indigo-600 transition">Editar</a>
                                 <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" onclick="deleteIndicador('${ind._id}')">Eliminar</button>
                             </td>
                         </tr>
                     `).join('')
-                    : '<tr><td colspan="8" class="py-3 px-4 text-center">No hay indicadores</td></tr>';
+                    : '<tr><td colspan=7 class="py-3 px-4 text-center">No hay indicadores</td></tr>';
 
-                // Actualizar controles de paginación
                 prevPageBtn.disabled = currentPage === 1;
                 nextPageBtn.disabled = currentPage === totalPages;
                 pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
             } catch (err) {
                 console.error('Error al cargar indicadores:', err);
-                tableBody.innerHTML = '<tr><td colspan="8" class="py-3 px-4 text-center">Error al cargar indicadores</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan=7 class="py-3 px-4 text-center">Error al cargar indicadores</td></tr>';
                 prevPageBtn.disabled = true;
                 nextPageBtn.disabled = true;
                 pageInfo.textContent = '';
@@ -251,12 +242,8 @@
 
         // Ordenar tabla
         function sortTable(field) {
-            if (sortField === field) {
-                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-            } else {
-                sortField = field;
-                sortDirection = 'asc';
-            }
+            sortField = field;
+            sortDirection = sortField === field && sortDirection === 'asc' ? 'desc' : 'asc';
             loadIndicadores();
         }
 
@@ -277,75 +264,46 @@
         });
 
         // Enviar formulario
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const indicador = indicadorSelect.value;
-            if (!indicador) {
-                alert('Selecciona un indicador');
-                return;
-            }
+   form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const indicador = indicadorSelect.value;
+    if (!indicador) {
+        alert('Selecciona un indicador');
+        return;
+    }
 
-            const id = document.getElementById('indicadorId').value;
-            const data = {
-                month: document.getElementById('month').value,
-                year: parseInt(document.getElementById('year').value) || 0,
-                real: parseFloat(document.getElementById('real').value) || 0,
-                meta: parseFloat(document.getElementById('meta').value) || 0,
-                Departamento: document.getElementById('departamento').value,
-                acumulado: parseFloat(document.getElementById('acumulado').value) || 0,
-            };
+    const month = document.getElementById('month').value;
+    const year = parseInt(document.getElementById('year').value) || 0;
+    const data = cais.map(cai => ({
+        month,
+        year,
+        real: parseFloat(document.querySelector(`[name="real_${cai}"]`).value) || 0,
+        meta: parseFloat(document.querySelector(`[name="meta_${cai}"]`).value) || 0,
+        acumulado: parseFloat(document.querySelector(`[name="acumulado_${cai}"]`).value) || 0,
+        Departamento: cai
+    }));
 
-            console.log('Datos enviados:', data);
-
-            try {
-                const method = id ? 'PUT' : 'POST';
-                const url = id ? `${baseUrl}/api/${indicador}/${id}` : `${baseUrl}/api/${indicador}`;
-                const response = await fetch(url, {
-                    method,
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data),
-                });
-                if (response.ok) {
-                    alert(id ? 'Indicador actualizado' : 'Indicador creado');
-                    form.reset();
-                    document.getElementById('indicadorId').value = '';
-                    currentPage = 1; // Resetear a la primera página
-                    loadIndicadores();
-                } else {
-                    const errorData = await response.json();
-                    console.error('Error al guardar indicador:', errorData);
-                    alert('Error al guardar indicador');
-                }
-            } catch (err) {
-                console.error('Error en la conexión con la API:', err);
-                alert('Error en la conexión con la API');
-            }
+    try {
+        const response = await fetch(`${baseUrl}/api/${indicador}/batch`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
         });
-
-        // Editar indicador
-        async function editIndicador(id) {
-            const indicador = indicadorSelect.value;
-            if (!indicador) {
-                alert('Selecciona un indicador');
-                return;
-            }
-
-            try {
-                const response = await fetch(`${baseUrl}/api/${indicador}/${id}`);
-                const ind = await response.json();
-                console.log('Indicador para editar:', ind);
-                document.getElementById('month').value = ind.month || '';
-                document.getElementById('real').value = ind.real || '';
-                document.getElementById('meta').value = ind.meta || '';
-                document.getElementById('departamento').value = ind.Departamento || '';
-                document.getElementById('year').value = ind.year || '';
-                document.getElementById('acumulado').value = ind.acumulado || '';
-                document.getElementById('indicadorId').value = ind._id;
-            } catch (err) {
-                console.error('Error al cargar indicador:', err);
-                alert('Error al cargar indicador');
-            }
+        if (response.ok) {
+            alert('Indicadores creados');
+            form.reset();
+            currentPage = 1;
+            loadIndicadores();
+        } else {
+            const errorData = await response.json();
+            console.error('Error al guardar indicadores:', errorData);
+            alert('Error al guardar indicadores');
         }
+    } catch (err) {
+        console.error('Error en la conexión con la API:', err);
+        alert('Error en la conexión con la API');
+    }
+});
 
         // Eliminar indicador
         async function deleteIndicador(id) {
@@ -360,7 +318,7 @@
                     const response = await fetch(`${baseUrl}/api/${indicador}/${id}`, { method: 'DELETE' });
                     if (response.ok) {
                         alert('Indicador eliminado');
-                        currentPage = 1; // Resetear a la primera página
+                        currentPage = 1;
                         loadIndicadores();
                     } else {
                         console.error('Error al eliminar indicador:', await response.json());
@@ -373,19 +331,19 @@
             }
         }
 
-        // Cargar indicadores al cambiar indicador o departamento
+        // Event listeners
         indicadorSelect.addEventListener('change', () => {
-            currentPage = 1; // Resetear página al cambiar indicador
+            currentPage = 1;
             loadIndicadores();
         });
         departamentoFilter.addEventListener('change', () => {
-            currentPage = 1; // Resetear página al cambiar filtro
+            currentPage = 1;
             loadIndicadores();
         });
 
-        // Cargar indicadores al iniciar
+        // Inicializar
+        generateCaiInputs();
         loadIndicadores();
     </script>
 </body>
 </html>
-

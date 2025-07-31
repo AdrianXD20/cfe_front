@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráficas de Indicadores CFE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-6 max-w-5xl">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Gráficas de Indicadores CFE</h1>
+
+        <!-- Filtros -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Filtros</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                    <label for="indicador" class="block text-sm font-medium text-gray-700">Indicador</label>
+                    <select id="indicador" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="" disabled selected>Selecciona un indicador</option>
+                        <option value="imu">IMU</option>
+                        <option value="comser">COMSER</option>
+                        <option value="percepcionFac">Percepción Facturación</option>
+                        <option value="efectividadAtencionSolic">Efectividad Atención Solicitudes</option>
+                        <option value="crcac">CRCAC</option>
+                        <option value="oec">OEC</option>
+                        <option value="dcfm">DCFM</option>
+                        <option value="doc">DOC</option>
+                        <option value="cap">CAP</option>
+                        <option value="cecap">CECAP</option>
+                        <option value="mea">MEA</option>
+                        <option value="mef">MEF</option>
+                        <option value="ttr">TTR</option>
+                        <option value="sat">SAT</option>
+                        <option value="cxc">CXC</option>
+                        <option value="icp">ICP</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="month" class="block text-sm font-medium text-gray-700">Mes</label>
+                    <select id="month" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="" disabled selected>Selecciona un mes</option>
+                        <option value="Enero">Enero</option>
+                        <option value="Febrero">Febrero</option>
+                        <option value="Marzo">Marzo</option>
+                        <option value="Abril">Abril</option>
+                        <option value="Mayo">Mayo</option>
+                        <option value="Junio">Junio</option>
+                        <option value="Julio">Julio</option>
+                        <option value="Agosto">Agosto</option>
+                        <option value="Septiembre">Septiembre</option>
+                        <option value="Octubre">Octubre</option>
+                        <option value="Noviembre">Noviembre</option>
+                        <option value="Diciembre">Diciembre</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="year" class="block text-sm font-medium text-gray-700">Año</label>
+                    <input type="text" id="year" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="YYYY" maxlength="4">
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenedor para las gráficas -->
+        <div id="chartsContainer" class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Gráfica del Indicador</h2>
+            <p id="noDataMessage" class="text-center text-gray-700 hidden">No hay datos disponibles para los filtros seleccionados</p>
+            <canvas id="chart" class="w-full h-96 hidden"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const indicadorSelect = document.getElementById('indicador');
+        const monthSelect = document.getElementById('month');
+        const yearSelect = document.getElementById('year');
+        const chartsContainer = document.getElementById('chartsContainer');
+        const noDataMessage = document.getElementById('noDataMessage');
+        const chartCanvas = document.getElementById('chart');
+        const baseUrl = 'https://cfe-indicadores-back.onrender.com';
+        let chartInstance = null;
+
+        const cais = [
+            'Centro', 'Norte', 'Sur', 'Oriente', 'Poniente',
+            'Progreso', 'Hunucma', 'Uman', 'Acanceh', 'Conkal', 'total'
+        ];
+
+        // Generar gráfica
+        function generateChart(indicador, data) {
+            // Destruir gráfica existente si la hay
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            // Mostrar canvas y ocultar mensaje de "no data"
+            chartCanvas.classList.remove('hidden');
+            noDataMessage.classList.add('hidden');
+
+            // Preparar datos para la gráfica
+            const labels = cais.filter(cai => data.some(item => item.Departamento === cai));
+            const realData = labels.map(cai => {
+                const item = data.find(item => item.Departamento === cai);
+                return item ? item.real || 0 : 0;
+            });
+            const metaData = labels.map(cai => {
+                const item = data.find(item => item.Departamento === cai);
+                return item ? item.meta || 0 : 0;
+            });
+
+            // Crear la gráfica
+            chartInstance = new Chart(chartCanvas, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Real (%)',
+                        data: realData,
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Porcentaje (%)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'CAI'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        annotation: {
+                            annotations: metaData.map((meta, index) => ({
+                                type: 'line',
+                                xMin: meta,
+                                xMax: meta,
+                                yMin: index - 0.4,
+                                yMax: index + 0.4,
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 2,
+                                label: {
+                                    display: true,
+                                    content: `Meta: ${meta}%`,
+                                    position: 'end',
+                                    backgroundColor: 'rgba(255, 99, 132, 0.8)',
+                                    color: '#fff'
+                                }
+                            }))
+                        }
+                    }
+                }
+            });
+        }
+
+        // Cargar datos y generar gráfica
+        async function loadChart() {
+            const indicador = indicadorSelect.value;
+            const month = monthSelect.value;
+            const year = yearSelect.value;
+
+            // Validar filtros
+            if (!indicador || !month || !year) {
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+                chartCanvas.classList.add('hidden');
+                noDataMessage.textContent = 'Selecciona un indicador, mes y año';
+                noDataMessage.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${baseUrl}/api/${indicador}?year=${year}`, { cache: 'no-store' });
+                if (!response.ok) {
+                    throw new Error('Error al obtener datos');
+                }
+                const indicadores = await response.json();
+
+                // Filtrar por mes y año
+                const filteredData = indicadores.filter(ind => 
+                    ind.month === month && ind.year === parseInt(year)
+                );
+
+                if (filteredData.length === 0) {
+                    if (chartInstance) {
+                        chartInstance.destroy();
+                    }
+                    chartCanvas.classList.add('hidden');
+                    noDataMessage.textContent = 'No hay datos disponibles para los filtros seleccionados';
+                    noDataMessage.classList.remove('hidden');
+                    return;
+                }
+
+                // Generar gráfica
+                generateChart(indicador, filteredData);
+            } catch (err) {
+                console.error('Error al cargar datos:', err);
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+                chartCanvas.classList.add('hidden');
+                noDataMessage.textContent = 'Error al cargar la gráfica';
+                noDataMessage.classList.remove('hidden');
+            }
+        }
+
+        // Event listeners para los filtros
+        indicadorSelect.addEventListener('change', loadChart);
+        monthSelect.addEventListener('change', loadChart);
+        yearSelect.addEventListener('change', loadChart);
+
+        // Inicializar
+        loadChart();
+    </script>
+</body>
+</html>

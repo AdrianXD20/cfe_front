@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Indicadores CFE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-6 max-w-5xl">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Editar Indicadores CFE</h1>
+
+        <!-- Información del Indicador -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Indicador: <span id="indicadorName"></span></h2>
+            <p class="text-gray-700 mb-2">Mes: <span id="month"></span></p>
+            <p class="text-gray-700 mb-4">Año: <span id="year"></span></p>
+            <form id="editForm" class="space-y-4">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">CAI</th>
+                                <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Real (%)</th>
+                                <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Meta (%)</th>
+                                <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Acumulado (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="caiInputs">
+                            <!-- Inputs generados dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex gap-4">
+                    <button type="submit" class="flex-1 bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700 transition">Guardar Cambios</button>
+                    <a href="index.html" class="flex-1 bg-gray-300 text-gray-700 p-2 rounded-md hover:bg-gray-400 transition text-center">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const editForm = document.getElementById('editForm');
+        const caiInputs = document.getElementById('caiInputs');
+        const indicadorName = document.getElementById('indicadorName');
+        const monthSpan = document.getElementById('month');
+        const yearSpan = document.getElementById('year');
+        const baseUrl = 'https://cfe-indicadores-back.onrender.com';
+
+        const cais = [
+            'Centro', 'Norte', 'Sur', 'Oriente', 'Poniente',
+            'Progreso', 'Hunucma', 'Uman', 'Acanceh', 'Conkal', 'total'
+        ];
+
+        const indicadoresMap = {
+            'imu': 'IMU', 'comser': 'COMSER', 'percepcionFac': 'Percepción Facturación',
+            'efectividadAtencionSolic': 'Efectividad Atención Solicitudes', 'crcac': 'CRCAC',
+            'oec': 'OEC', 'dcfm': 'DCFM', 'doc': 'DOC', 'cap': 'CAP', 'cecap': 'CECAP',
+            'mea': 'MEA', 'mef': 'MEF', 'ttr': 'TTR', 'sat': 'SAT', 'cxc': 'CXC', 'icp': 'ICP'
+        };
+
+        // Obtener parámetros de la URL
+        const params = new URLSearchParams(window.location.search);
+        const indicador = params.get('indicador');
+        const month = params.get('month');
+        const year = params.get('year');
+
+        // Mostrar información
+        indicadorName.textContent = indicadoresMap[indicador] || indicador;
+        monthSpan.textContent = month || 'N/A';
+        yearSpan.textContent = year || 'N/A';
+
+        // Generar inputs para CAIs
+        async function generateCaiInputs() {
+            try {
+                const response = await fetch(`${baseUrl}/api/${indicador}?month=${encodeURIComponent(month)}&year=${year}`);
+                const indicadores = await response.json();
+                const indicadoresMap = indicadores.reduce((map, ind) => {
+                    map[ind.Departamento] = ind;
+                    return map;
+                }, {});
+
+                caiInputs.innerHTML = cais.map(cai => {
+                    const ind = indicadoresMap[cai] || { real: '', meta: '', acumulado: '' };
+                    return `
+                        <tr>
+                            <td class="py-2 px-4">${cai}</td>
+                            <td class="py-2 px-4">
+                                <input type="number" name="real_${cai}" step="0.01" class="w-full p-2 border border-gray-300 rounded-md" value="${ind.real || ''}" required>
+                            </td>
+                            <td class="py-2 px-4">
+                                <input type="number" name="meta_${cai}" step="0.01" class="w-full p-2 border border-gray-300 rounded-md" value="${ind.meta || ''}" required>
+                            </td>
+                            <td class="py-2 px-4">
+                                <input type="number" name="acumulado_${cai}" step="0.01" class="w-full p-2 border border-gray-300 rounded-md" value="${ind.acumulado || ''}" required>
+                            </td>
+                            <input type="hidden" name="id_${cai}" value="${ind._id || ''}">
+                        </tr>
+                    `;
+                }).join('');
+            } catch (err) {
+                console.error('Error al cargar indicadores:', err);
+                caiInputs.innerHTML = '<tr><td colspan=4 class="py-2 px-4 text-center">Error al cargar datos</td></tr>';
+            }
+        }
+
+        // Enviar formulario
+        editForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = cais.map(cai => ({
+                _id: document.querySelector(`[name="id_${cai}"]`).value || undefined,
+                month,
+                year: parseInt(year),
+                real: parseFloat(document.querySelector(`[name="real_${cai}"]`).value) || 0,
+                meta: parseFloat(document.querySelector(`[name="meta_${cai}"]`).value) || 0,
+                acumulado: parseFloat(document.querySelector(`[name="acumulado_${cai}"]`).value) || 0,
+                Departamento: cai
+            }));
+
+            try {
+                const response = await fetch(`${baseUrl}/api/${indicador}/batch`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (response.ok) {
+                    alert('Indicadores actualizados');
+                    window.location.href = 'index.html';
+                } else {
+                    const errorData = await response.json();
+                    console.error('Error al guardar indicadores:', errorData);
+                    alert('Error al guardar indicadores');
+                }
+            } catch (err) {
+                console.error('Error en la conexión con la API:', err);
+                alert('Error en la conexión con la API');
+            }
+        });
+
+        // Inicializar
+        generateCaiInputs();
+    </script>
+</body>
+</html>
