@@ -33,7 +33,7 @@
                 </div>
                 <div class="flex gap-4">
                     <button type="submit" class="flex-1 bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700 transition">Guardar Cambios</button>
-                    <a href="index.html" class="flex-1 bg-gray-300 text-gray-700 p-2 rounded-md hover:bg-gray-400 transition text-center">Cancelar</a>
+                    <a href="newCrud.html" class="flex-1 bg-gray-300 text-gray-700 p-2 rounded-md hover:bg-gray-400 transition text-center">Cancelar</a>
                 </div>
             </form>
         </div>
@@ -74,6 +74,9 @@
         async function generateCaiInputs() {
             try {
                 const response = await fetch(`${baseUrl}/api/${indicador}?month=${encodeURIComponent(month)}&year=${year}`);
+                if (!response.ok) {
+                    throw new Error(`Error ${response.status}: ${await response.text()}`);
+                }
                 const indicadores = await response.json();
                 const indicadoresMap = indicadores.reduce((map, ind) => {
                     map[ind.Departamento] = ind;
@@ -100,22 +103,30 @@
                 }).join('');
             } catch (err) {
                 console.error('Error al cargar indicadores:', err);
-                caiInputs.innerHTML = '<tr><td colspan=4 class="py-2 px-4 text-center">Error al cargar datos</td></tr>';
+                caiInputs.innerHTML = '<tr><td colspan=4 class="py-2 px-4 text-center">Error al cargar datos: ' + err.message + '</td></tr>';
             }
         }
 
         // Enviar formulario
         editForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const data = cais.map(cai => ({
-                _id: document.querySelector(`[name="id_${cai}"]`).value || undefined,
-                month,
-                year: parseInt(year),
-                real: parseFloat(document.querySelector(`[name="real_${cai}"]`).value) || 0,
-                meta: parseFloat(document.querySelector(`[name="meta_${cai}"]`).value) || 0,
-                acumulado: parseFloat(document.querySelector(`[name="acumulado_${cai}"]`).value) || 0,
-                Departamento: cai
-            }));
+            const data = cais.map(cai => {
+                const idInput = document.querySelector(`[name="id_${cai}"]`);
+                const realInput = document.querySelector(`[name="real_${cai}"]`);
+                const metaInput = document.querySelector(`[name="meta_${cai}"]`);
+                const acumuladoInput = document.querySelector(`[name="acumulado_${cai}"]`);
+                return {
+                    _id: idInput ? idInput.value || undefined : undefined,
+                    month,
+                    year: parseInt(year),
+                    real: realInput ? parseFloat(realInput.value) || 0 : 0,
+                    meta: metaInput ? parseFloat(metaInput.value) || 0 : 0,
+                    acumulado: acumuladoInput ? parseFloat(acumuladoInput.value) || 0 : 0,
+                    Departamento: cai
+                };
+            });
+
+            console.log('Datos enviados al backend:', JSON.stringify(data, null, 2)); // Depuración
 
             try {
                 const response = await fetch(`${baseUrl}/api/${indicador}/batch`, {
@@ -125,15 +136,15 @@
                 });
                 if (response.ok) {
                     alert('Indicadores actualizados');
-                    window.location.href = 'index.html';
+                    window.location.href = 'newCrud.html';
                 } else {
                     const errorData = await response.json();
                     console.error('Error al guardar indicadores:', errorData);
-                    alert('Error al guardar indicadores');
+                    alert(`Error al guardar indicadores: ${errorData.details || errorData.error || 'Error desconocido'}`);
                 }
             } catch (err) {
                 console.error('Error en la conexión con la API:', err);
-                alert('Error en la conexión con la API');
+                alert('Error en la conexión con la API: ' + err.message);
             }
         });
 
