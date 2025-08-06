@@ -103,6 +103,10 @@
                 const item = data.find(item => item.Departamento === cai);
                 return item ? item.meta || 0 : 0;
             });
+            constAcumuado = labels.map(cai =>{
+                const item = data.find(item => item.Departamento === cai);
+                return item ? item.acumulado || 0 : 0;
+            } );
 
             // Crear la gráfica
             chartInstance = new Chart(chartCanvas, {
@@ -155,7 +159,7 @@
                                     color: '#fff'
                                 }
                             }))
-                        }
+                        },
                     }
                 }
             });

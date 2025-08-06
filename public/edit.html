@@ -45,7 +45,7 @@
         const indicadorName = document.getElementById('indicadorName');
         const monthSpan = document.getElementById('month');
         const yearSpan = document.getElementById('year');
-        const baseUrl = 'https://cfe-indicadores-back.onrender.com';
+        const baseUrl = 'https://cfe-indicadores-back.onrender.com'; // Cambia a 'https://cfe-indicadores-back.onrender.com' en producción
 
         const cais = [
             'Centro', 'Norte', 'Sur', 'Oriente', 'Poniente',
@@ -61,14 +61,25 @@
 
         // Obtener parámetros de la URL
         const params = new URLSearchParams(window.location.search);
-        const indicador = params.get('indicador');
-        const month = params.get('month');
-        const year = params.get('year');
+        const indicador = params.get('indicador')?.trim(); // Eliminar espacios en blanco
+        const month = params.get('month')?.trim();
+        const year = params.get('year')?.trim();
+
+        // Validar parámetros
+        if (!indicador || !month || !year) {
+            alert('Faltan parámetros en la URL: indicador, month o year');
+            window.location.href = 'newCrud.html';
+        }
 
         // Mostrar información
         indicadorName.textContent = indicadoresMap[indicador] || indicador;
         monthSpan.textContent = month || 'N/A';
         yearSpan.textContent = year || 'N/A';
+
+        // Validar si un ID es un ObjectId válido (24 caracteres hexadecimales)
+        function isValidObjectId(id) {
+            return /^[0-9a-fA-F]{24}$/.test(id);
+        }
 
         // Generar inputs para CAIs
         async function generateCaiInputs() {
@@ -78,6 +89,7 @@
                     throw new Error(`Error ${response.status}: ${await response.text()}`);
                 }
                 const indicadores = await response.json();
+                console.log('Datos recibidos de la API:', JSON.stringify(indicadores, null, 2));
                 const indicadoresMap = indicadores.reduce((map, ind) => {
                     map[ind.Departamento] = ind;
                     return map;
@@ -85,6 +97,7 @@
 
                 caiInputs.innerHTML = cais.map(cai => {
                     const ind = indicadoresMap[cai] || { real: '', meta: '', acumulado: '' };
+                    const idValue = ind._id && isValidObjectId(ind._id) ? ind._id : '';
                     return `
                         <tr>
                             <td class="py-2 px-4">${cai}</td>
@@ -97,7 +110,7 @@
                             <td class="py-2 px-4">
                                 <input type="number" name="acumulado_${cai}" step="0.01" class="w-full p-2 border border-gray-300 rounded-md" value="${ind.acumulado || ''}" required>
                             </td>
-                            <input type="hidden" name="id_${cai}" value="${ind._id || ''}">
+                            <input type="hidden" name="id_${cai}" value="${idValue}">
                         </tr>
                     `;
                 }).join('');
@@ -115,8 +128,9 @@
                 const realInput = document.querySelector(`[name="real_${cai}"]`);
                 const metaInput = document.querySelector(`[name="meta_${cai}"]`);
                 const acumuladoInput = document.querySelector(`[name="acumulado_${cai}"]`);
+                const idValue = idInput && idInput.value && isValidObjectId(idInput.value) ? idInput.value : undefined;
                 return {
-                    _id: idInput ? idInput.value || undefined : undefined,
+                    _id: idValue,
                     month,
                     year: parseInt(year),
                     real: realInput ? parseFloat(realInput.value) || 0 : 0,
@@ -126,7 +140,7 @@
                 };
             });
 
-            console.log('Datos enviados al backend:', JSON.stringify(data, null, 2)); // Depuración
+            console.log('Datos enviados al backend:', JSON.stringify(data, null, 2));
 
             try {
                 const response = await fetch(`${baseUrl}/api/${indicador}/batch`, {
@@ -134,14 +148,21 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
-                if (response.ok) {
-                    alert('Indicadores actualizados');
-                    window.location.href = 'newCrud.html';
-                } else {
-                    const errorData = await response.json();
+                if (!response.ok) {
+                    let errorData;
+                    try {
+                        errorData = await response.json();
+                    } catch (jsonError) {
+                        throw new Error(`Error ${response.status}: ${await response.text()}`);
+                    }
                     console.error('Error al guardar indicadores:', errorData);
                     alert(`Error al guardar indicadores: ${errorData.details || errorData.error || 'Error desconocido'}`);
+                    return;
                 }
+                const result = await response.json();
+                console.log('Respuesta del backend:', result);
+                alert('Indicadores actualizados');
+                window.location.href = 'newCrud.html';
             } catch (err) {
                 console.error('Error en la conexión con la API:', err);
                 alert('Error en la conexión con la API: ' + err.message);
